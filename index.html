@@ -260,7 +260,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://hujuncheng132.github.io/2019/12/04/introduce/">
+    <link itemprop="mainEntityOfPage" href="https://hujuncheng132.github.io/2019/12/06/001/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Juncheng Hu">
@@ -279,7 +279,193 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/12/04/introduce/" itemprop="url">介绍</a></h1>
+                <a class="post-title-link" href="/2019/12/06/001/" itemprop="url">c++系列文章（1）：signed和unsigned</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-06T13:42:35+08:00">
+                2019-12-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>&emsp;&emsp;<strong>带符号类型（signed）</strong>可以表示正数、负数或0，<strong>无符号类型（unsigned）</strong>仅能表示大于等于0的值。C++标准并没有规定signed类型应该如何表示，但约定了在表示范围内正值和负值的量应该平衡。在计算机内部，signed类型二进制的最高位是符号位，用来表示正负，其余二进制位用来表示数值；unsigned类型的所有二进制位都用于表示数值。  </p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>最小值</th>
+<th>最小值</th>
+<th>大小</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>char</td>
+<td>-128(-2^7)</td>
+<td>127(2^7-1)</td>
+<td>1字节</td>
+</tr>
+<tr>
+<td>signed char</td>
+<td>-128((-2^7))</td>
+<td>127((2^7-1))</td>
+<td>1字节</td>
+</tr>
+<tr>
+<td>unsigned char</td>
+<td>0</td>
+<td>255((2^8-1))</td>
+<td>1字节</td>
+</tr>
+<tr>
+<td>short</td>
+<td>-32768(-2^15)</td>
+<td>32767((2^15-1))</td>
+<td>2字节</td>
+</tr>
+<tr>
+<td>unsigned char</td>
+<td>0</td>
+<td>65535((2^16-1))</td>
+<td>2字节</td>
+</tr>
+<tr>
+<td>int</td>
+<td>-2^31</td>
+<td>2^31-1</td>
+<td>4字节</td>
+</tr>
+<tr>
+<td>unsigned int</td>
+<td>0</td>
+<td>2^32-1</td>
+<td>4字节</td>
+</tr>
+<tr>
+<td>long</td>
+<td>-2^63</td>
+<td>2^63-1</td>
+<td>8字节</td>
+</tr>
+<tr>
+<td>unsigned long</td>
+<td>0</td>
+<td>2^64-1</td>
+<td>8字节</td>
+</tr>
+</tbody></table>
+<h2 id="signed的负数范围比正数范围多1"><a href="#signed的负数范围比正数范围多1" class="headerlink" title="signed的负数范围比正数范围多1"></a>signed的负数范围比正数范围多1</h2><p>&emsp;&emsp;为什么signed类型的负数范围总是比正数范围多一个，这是因为在计算机内部存储时并不是直接采用原码形式，而是采用<strong>补码</strong>的形式。下面以signed char为例进行说明。<br>&emsp;&emsp;不使用原码，是因为计算机只会做加法，不会做减法，例如1-1在计算机内部使采用1+（-1）的形式进行计算的。如果直接采用原码计算得到的结果是-2，为了避免原码减法运算错误的问题，引入了<strong>反码</strong>。<em>正数的反码是其原码本身，负数的反码是其原码除符号位外全部取反</em>。<br>&emsp;&emsp;但反码又会带来新的问题，-0和+0都表示0，+0的反码为00000000，-0的反码为11111111，但这两个不同的反码都表示0，为了避免出现两个0的表现形式，引入了<strong>补码</strong>。<em>正数的补码使其原码本身，负数的补码是其反码加1</em>。此时+0的补码为0000 0000，-0的补码为1111 1111加1即1 0000 0000，由于signed char是8位，因此取低8位即为0000 0000，这样+0和-0的补码都是同一个形式。  但此时-0的原码1000 0000则没有作用了，而-128的原码1 1000 0000的低8位正好和-0的原码1000 0000相同，为了提供利用率，便用-0的原码来表示-128，<code>cout &lt;&lt; (int)((char)(0x80)); //输出-128</code>。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>&emsp;&emsp;char和bool类型不用用于算术表达式，char类型在某些机器上表现为unsigned char，在另一些机器上表现为signed char（在本环境下表现为signed char），为了代码易移植，在使用char是最好明确是unsigned还是signed。<br>&emsp;&emsp;赋给unsigned类型一个超出它范围的值时，结果是初始值对unsigned类型表示数值的总数取模后的余数，如<code>unsigned char c =  -1; //c的值是-1%256，即255</code>。<br>&emsp;&emsp;赋给signed类型一个超出它范围的值时，结果是未定义的，在本环境下，<code>signed char c =  -130； //c的值是126</code>，<code>signed char c =  129； //c的值是-127</code>。<br>&emsp;&emsp;当表达式中既有unsigned类型又有signed类型时，signed类型都会转换成unsigned类型，因此不能将unsigned和singned类型在同一个表达式中混用。<br>&emsp;&emsp;无论从unsigned类型中减去一个多大的值，最后的结果都不可能是负数。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hujuncheng132.github.io/2019/12/04/000/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Juncheng Hu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="父进程">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/04/000/" itemprop="url">介绍</a></h1>
         
 
         <div class="post-meta">
@@ -413,7 +599,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

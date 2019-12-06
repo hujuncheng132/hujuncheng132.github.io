@@ -79,14 +79,14 @@
 
 
 
-<meta name="description" content="大家好，这是我的个人博客，主要记载一些自己的学习和工作心得，偶尔也会写一些生活琐事，希望大家多多指教，共同进步，谢谢！">
+<meta name="description" content="&amp;emsp;&amp;emsp;带符号类型（signed）可以表示正数、负数或0，无符号类型（unsigned）仅能表示大于等于0的值。C++标准并没有规定signed类型应该如何表示，但约定了在表示范围内正值和负值的量应该平衡。在计算机内部，signed类型二进制的最高位是符号位，用来表示正负，其余二进制位用来表示数值；unsigned类型的所有二进制位都用于表示数值。      类型 最小值 最小值">
 <meta property="og:type" content="article">
-<meta property="og:title" content="介绍">
-<meta property="og:url" content="https:&#x2F;&#x2F;hujuncheng132.github.io&#x2F;2019&#x2F;12&#x2F;04&#x2F;introduce&#x2F;index.html">
+<meta property="og:title" content="c++系列文章（1）：signed和unsigned">
+<meta property="og:url" content="https:&#x2F;&#x2F;hujuncheng132.github.io&#x2F;2019&#x2F;12&#x2F;06&#x2F;001&#x2F;index.html">
 <meta property="og:site_name" content="父进程">
-<meta property="og:description" content="大家好，这是我的个人博客，主要记载一些自己的学习和工作心得，偶尔也会写一些生活琐事，希望大家多多指教，共同进步，谢谢！">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;带符号类型（signed）可以表示正数、负数或0，无符号类型（unsigned）仅能表示大于等于0的值。C++标准并没有规定signed类型应该如何表示，但约定了在表示范围内正值和负值的量应该平衡。在计算机内部，signed类型二进制的最高位是符号位，用来表示正负，其余二进制位用来表示数值；unsigned类型的所有二进制位都用于表示数值。      类型 最小值 最小值">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-04T02:07:04.186Z">
+<meta property="og:updated_time" content="2019-12-06T13:45:37.183Z">
 <meta name="twitter:card" content="summary">
 
 
@@ -117,13 +117,13 @@
 
 
 
-  <link rel="canonical" href="https://hujuncheng132.github.io/2019/12/04/introduce/"/>
+  <link rel="canonical" href="https://hujuncheng132.github.io/2019/12/06/001/"/>
 
 
 
 
 
-  <title>介绍 | 父进程</title>
+  <title>c++系列文章（1）：signed和unsigned | 父进程</title>
   
 
 
@@ -260,7 +260,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://hujuncheng132.github.io/2019/12/04/introduce/">
+    <link itemprop="mainEntityOfPage" href="https://hujuncheng132.github.io/2019/12/06/001/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Juncheng Hu">
@@ -277,7 +277,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">介绍</h1>
+          <h1 class="post-title" itemprop="name headline">c++系列文章（1）：signed和unsigned</h1>
         
 
         <div class="post-meta">
@@ -289,8 +289,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-04T10:07:04+08:00">
-                2019-12-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-06T13:42:35+08:00">
+                2019-12-06
               </time>
             
 
@@ -327,7 +327,73 @@
       
 
       
-        <p>大家好，这是我的个人博客，主要记载一些自己的学习和工作心得，偶尔也会写一些生活琐事，希望大家多多指教，共同进步，谢谢！</p>
+        <p>&emsp;&emsp;<strong>带符号类型（signed）</strong>可以表示正数、负数或0，<strong>无符号类型（unsigned）</strong>仅能表示大于等于0的值。C++标准并没有规定signed类型应该如何表示，但约定了在表示范围内正值和负值的量应该平衡。在计算机内部，signed类型二进制的最高位是符号位，用来表示正负，其余二进制位用来表示数值；unsigned类型的所有二进制位都用于表示数值。  </p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>最小值</th>
+<th>最小值</th>
+<th>大小</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>char</td>
+<td>-128(-2^7)</td>
+<td>127(2^7-1)</td>
+<td>1字节</td>
+</tr>
+<tr>
+<td>signed char</td>
+<td>-128((-2^7))</td>
+<td>127((2^7-1))</td>
+<td>1字节</td>
+</tr>
+<tr>
+<td>unsigned char</td>
+<td>0</td>
+<td>255((2^8-1))</td>
+<td>1字节</td>
+</tr>
+<tr>
+<td>short</td>
+<td>-32768(-2^15)</td>
+<td>32767((2^15-1))</td>
+<td>2字节</td>
+</tr>
+<tr>
+<td>unsigned char</td>
+<td>0</td>
+<td>65535((2^16-1))</td>
+<td>2字节</td>
+</tr>
+<tr>
+<td>int</td>
+<td>-2^31</td>
+<td>2^31-1</td>
+<td>4字节</td>
+</tr>
+<tr>
+<td>unsigned int</td>
+<td>0</td>
+<td>2^32-1</td>
+<td>4字节</td>
+</tr>
+<tr>
+<td>long</td>
+<td>-2^63</td>
+<td>2^63-1</td>
+<td>8字节</td>
+</tr>
+<tr>
+<td>unsigned long</td>
+<td>0</td>
+<td>2^64-1</td>
+<td>8字节</td>
+</tr>
+</tbody></table>
+<h2 id="signed的负数范围比正数范围多1"><a href="#signed的负数范围比正数范围多1" class="headerlink" title="signed的负数范围比正数范围多1"></a>signed的负数范围比正数范围多1</h2><p>&emsp;&emsp;为什么signed类型的负数范围总是比正数范围多一个，这是因为在计算机内部存储时并不是直接采用原码形式，而是采用<strong>补码</strong>的形式。下面以signed char为例进行说明。<br>&emsp;&emsp;不使用原码，是因为计算机只会做加法，不会做减法，例如1-1在计算机内部使采用1+（-1）的形式进行计算的。如果直接采用原码计算得到的结果是-2，为了避免原码减法运算错误的问题，引入了<strong>反码</strong>。<em>正数的反码是其原码本身，负数的反码是其原码除符号位外全部取反</em>。<br>&emsp;&emsp;但反码又会带来新的问题，-0和+0都表示0，+0的反码为00000000，-0的反码为11111111，但这两个不同的反码都表示0，为了避免出现两个0的表现形式，引入了<strong>补码</strong>。<em>正数的补码使其原码本身，负数的补码是其反码加1</em>。此时+0的补码为0000 0000，-0的补码为1111 1111加1即1 0000 0000，由于signed char是8位，因此取低8位即为0000 0000，这样+0和-0的补码都是同一个形式。  但此时-0的原码1000 0000则没有作用了，而-128的原码1 1000 0000的低8位正好和-0的原码1000 0000相同，为了提供利用率，便用-0的原码来表示-128，<code>cout &lt;&lt; (int)((char)(0x80)); //输出-128</code>。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>&emsp;&emsp;char和bool类型不用用于算术表达式，char类型在某些机器上表现为unsigned char，在另一些机器上表现为signed char（在本环境下表现为signed char），为了代码易移植，在使用char是最好明确是unsigned还是signed。<br>&emsp;&emsp;赋给unsigned类型一个超出它范围的值时，结果是初始值对unsigned类型表示数值的总数取模后的余数，如<code>unsigned char c =  -1; //c的值是-1%256，即255</code>。<br>&emsp;&emsp;赋给signed类型一个超出它范围的值时，结果是未定义的，在本环境下，<code>signed char c =  -130； //c的值是126</code>，<code>signed char c =  129； //c的值是-127</code>。<br>&emsp;&emsp;当表达式中既有unsigned类型又有signed类型时，signed类型都会转换成unsigned类型，因此不能将unsigned和singned类型在同一个表达式中混用。<br>&emsp;&emsp;无论从unsigned类型中减去一个多大的值，最后的结果都不可能是负数。</p>
 
       
     </div>
@@ -348,6 +414,22 @@
       
       
 
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/04/000/" rel="next" title="介绍">
+                <i class="fa fa-chevron-left"></i> 介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
 
       
@@ -396,8 +478,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -412,7 +503,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -439,6 +530,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#signed的负数范围比正数范围多1"><span class="nav-number">1.</span> <span class="nav-text">signed的负数范围比正数范围多1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意事项"><span class="nav-number">2.</span> <span class="nav-text">注意事项</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
