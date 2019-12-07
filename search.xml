@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>c++系列文章（2）：分离式编译——变量的声明和定义</title>
+    <url>/2019/12/06/002/</url>
+    <content><![CDATA[<p>&emsp;&emsp;C++语言支持<strong>分离式编译</strong>，该机制允许将程序分割成若干个文件，每个文件可被独立编译。如果将程序分为多个文件，则需要在文件之间共享代码，例如一个文件中的代码可能需要使用另一个文件中定义的变量，如cin和cout在标准库中定义，我们却能在自己的程序中使用。</p>
+<h2 id="声明和定义"><a href="#声明和定义" class="headerlink" title="声明和定义"></a>声明和定义</h2><p>&emsp;&emsp;为了支持分离式编译，C++语言将声明和定义区分开来。<strong>声明使得名字为程序所知</strong>，一个文件如果想使用别处定义的名字则必须包含对那个名字的声明。而<strong>定义则负责创建与名字关联的实体</strong>。<br>&emsp;&emsp;<strong>声明规定了变量的类型和名字</strong>，而<strong>定义除了规定了变量的类型和名字外，还申请了存储空间，还可能为变量赋一个初始值</strong>。如果只是声明一个变量而不是定义它，就在变量名前添加关键字extern并且不要显式初始化变量。  </p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> i; <span class="comment">//声明而非定义i</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> j; <span class="comment">//声明并定义j</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;任何包含了显式初始化的声明即成为定义，不论是否有extern关键字。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> j = <span class="number">0</span>; <span class="comment">//定义j</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;变量只可以被定义一次，但可以被声明多次。</p>
+<h2 id="标识符的命名规范"><a href="#标识符的命名规范" class="headerlink" title="标识符的命名规范"></a>标识符的命名规范</h2><p>&emsp;&emsp;C++的标识符由字母、数字和下划线组成，其中必须以下划线或者字母开头。为了避免和标准库中的名字冲突，<strong>用户自定义的标识符中不能连续出现两个下划线，也不能以下划线紧接大写字母开头</strong>，此外<strong>定义在函数体外的标识符不能以下划线开头</strong>。</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>分离式编译</tag>
+        <tag>extern</tag>
+        <tag>命名规范</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>c++系列文章（1）：signed和unsigned</title>
+    <url>/2019/12/06/001/</url>
+    <content><![CDATA[<p>&emsp;&emsp;<strong>带符号类型（signed）</strong>可以表示正数、负数或0，<strong>无符号类型（unsigned）</strong>仅能表示大于等于0的值。C++标准并没有规定signed类型应该如何表示，但约定了在表示范围内正值和负值的量应该平衡。在计算机内部，signed类型二进制的最高位是符号位，用来表示正负，其余二进制位用来表示数值；unsigned类型的所有二进制位都用于表示数值。  </p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>最小值</th>
+<th>最小值</th>
+<th>大小</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>char</td>
+<td>-128(-2^7)</td>
+<td>127(2^7-1)</td>
+<td>1字节</td>
+</tr>
+<tr>
+<td>signed char</td>
+<td>-128(-2^7)</td>
+<td>127(2^7-1)</td>
+<td>1字节</td>
+</tr>
+<tr>
+<td>unsigned char</td>
+<td>0</td>
+<td>255(2^8-1)</td>
+<td>1字节</td>
+</tr>
+<tr>
+<td>short</td>
+<td>-32768(-2^15)</td>
+<td>32767(2^15-1)</td>
+<td>2字节</td>
+</tr>
+<tr>
+<td>unsigned char</td>
+<td>0</td>
+<td>65535(2^16-1)</td>
+<td>2字节</td>
+</tr>
+<tr>
+<td>int</td>
+<td>-2^31</td>
+<td>2^31-1</td>
+<td>4字节</td>
+</tr>
+<tr>
+<td>unsigned int</td>
+<td>0</td>
+<td>2^32-1</td>
+<td>4字节</td>
+</tr>
+<tr>
+<td>long</td>
+<td>-2^63</td>
+<td>2^63-1</td>
+<td>8字节</td>
+</tr>
+<tr>
+<td>unsigned long</td>
+<td>0</td>
+<td>2^64-1</td>
+<td>8字节</td>
+</tr>
+</tbody></table>
+<h2 id="signed的负数范围比正数范围多1"><a href="#signed的负数范围比正数范围多1" class="headerlink" title="signed的负数范围比正数范围多1"></a>signed的负数范围比正数范围多1</h2><p>&emsp;&emsp;为什么signed类型的负数范围总是比正数范围多一个，这是因为在计算机内部存储时并不是直接采用原码形式，而是采用<strong>补码</strong>的形式。下面以signed char为例进行说明。<br>&emsp;&emsp;不使用原码，是因为计算机只会做加法，不会做减法，例如1-1在计算机内部使采用1+（-1）的形式进行计算的。如果直接采用原码计算得到的结果是-2，为了避免原码减法运算错误的问题，引入了<strong>反码</strong>。<em>正数的反码是其原码本身，负数的反码是其原码除符号位外全部取反</em>。<br>&emsp;&emsp;但反码又会带来新的问题，-0和+0都表示0，+0的反码为00000000，-0的反码为11111111，但这两个不同的反码都表示0，为了避免出现两个0的表现形式，引入了<strong>补码</strong>。<em>正数的补码使其原码本身，负数的补码是其反码加1</em>。此时+0的补码为0000 0000，-0的补码为1111 1111加1即1 0000 0000，由于signed char是8位，因此取低8位即为0000 0000，这样+0和-0的补码都是同一个形式。  但此时-0的原码1000 0000则没有作用了，而-128的原码1 1000 0000的低8位正好和-0的原码1000 0000相同，为了提供利用率，便用-0的原码来表示-128，<code>cout &lt;&lt; (int)((char)(0x80)); //输出-128</code>。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>&emsp;&emsp;char和bool类型不用用于算术表达式，char类型在某些机器上表现为unsigned char，在另一些机器上表现为signed char（在本环境下表现为signed char），为了代码易移植，在使用char是最好明确是unsigned还是signed。<br>&emsp;&emsp;赋给unsigned类型一个超出它范围的值时，结果是初始值对unsigned类型表示数值的总数取模后的余数，如<code>unsigned char c =  -1; //c的值是-1%256，即255</code>。<br>&emsp;&emsp;赋给signed类型一个超出它范围的值时，结果是未定义的，在本环境下，<code>signed char c =  -130； //c的值是126</code>，<code>signed char c =  129； //c的值是-127</code>。<br>&emsp;&emsp;当表达式中既有unsigned类型又有signed类型时，signed类型都会转换成unsigned类型，因此不能将unsigned和singned类型在同一个表达式中混用。<br>&emsp;&emsp;无论从unsigned类型中减去一个多大的值，最后的结果都不可能是负数。</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>带符号类型</tag>
+        <tag>无符号类型</tag>
+        <tag>补码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>说明</title>
+    <url>/2019/12/04/000/</url>
+    <content><![CDATA[<p>&emsp;&emsp;大家好，这是我的个人博客，主要记载一些自己的学习和工作心得，偶尔也会写一些生活琐事，希望大家多多指教，共同进步，谢谢！<br>&emsp;&emsp;为了避免误解，博客中的文章统一基于以下环境，特此说明。</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>系统</td>
+<td>Ubuntu 16.04.6 LTS x86_64</td>
+</tr>
+<tr>
+<td>cpp编译器</td>
+<td>g++ 5.4.0</td>
+</tr>
+</tbody></table>
+]]></content>
+  </entry>
+</search>
