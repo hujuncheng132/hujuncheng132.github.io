@@ -301,6 +301,224 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hujuncheng132.github.io/2019/12/10/004/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Juncheng Hu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="父进程">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/10/004/" itemprop="url">c++系列文章（4）：const限定符</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-10T21:48:58+08:00">
+                2019-12-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/12/10/004/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/12/10/004/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/12/10/004/" class="leancloud_visitors" data-flag-title="c++系列文章（4）：const限定符">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.5k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>&emsp;&emsp;const对象一旦创建后其值就不能再改变，所以const对象必须初始化，且初始值可以是任意复杂的表达式。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> i = getsize(); <span class="comment">//运行时初始化</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> j = <span class="number">1</span>; <span class="comment">//编译时初始化</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;当以编译时初始化的方式定义一个const对象时，编译器将在编译过程中把用到该变量的地方替换成对应的值。为了执行替换，编译器必须知道常量的初始值，因此<strong>默认情况下，const对象被设定在仅在文件内有效</strong>，当在多个文件中出现了同名的const变量时，其实等同于在不同的文件中分别定义了独立的变量。<br>&emsp;&emsp;某些时候，我们不希望编译器为每个文件分别生成独立的变量，而是希望像普通变量一样在不同文件之间共享const变量，也就是说只在一个文件中定义const，而在其他多个文件中声明并使用它。解决的方式是，对于const变量<strong>不管是声明还是定义都添加extern关键字</strong>，这样只需定义一次即可。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment">//file_1.cc</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufSize = fcn();</span></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment">//file_1.h</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="keyword">int</span> bufSize; <span class="comment">//与file_1.cc中定义的bufSize是同一个</span></span></pre></td></tr></table></figure>
+<h2 id="const和引用"><a href="#const和引用" class="headerlink" title="const和引用"></a>const和引用</h2><p>&emsp;&emsp;说明：程序员常把对const的引用简称为“常量引用”。<br>&emsp;&emsp;之前提到过，引用的类型必须与其所引用对象的类型一致，但有两个例外。<strong>第一种例外就是在初始化常量引用时允许用任意表达式作为初始值，只要该表达式的结果能够转换成引用的类型即可</strong>。尤其，<strong>允许为一个常量引用绑定非常量的对象、字面值、甚至一个一般表达式</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r1 = i; <span class="comment">//正确，允许将常量引用绑定到一个普通变量上</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r2 = <span class="number">1</span>; <span class="comment">//正确，允许将常量引用绑定到一个字面值上</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r3 = i*<span class="number">2</span>; <span class="comment">//正确，允许将常量引用绑定到一般表达式上</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> &amp;r4 = i*<span class="number">2</span>; <span class="comment">//错误，r4是普通的非常量引用，不能绑定到一个表达式上</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> d = <span class="number">3.14</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r5 = d; <span class="comment">//正确，double变量能够转换成int类型</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;为什么能够将一个普通double类型变量绑定到一个int类型的const引用上？实际上，当一个常量引用被绑定到另外一种类型上时，这个常量引用实际是绑定在了一个临时变量上。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> temp = d; <span class="comment">//由double数生成一个临时的int变量</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r5 = &amp;temp; <span class="comment">//r5实际是绑定在这个临时变量上</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;常量引用只是对引用可参与的操作做出了限定，对与引用的对象本身发是不是一个常量并未限制。因此常量引用既可以绑定const对象也可以绑定非常量对象，如果绑定的是非常量对象，则只是不能通过引用改变该对象，但可以直接通过该对象进行改变。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;r = i; <span class="comment">//正确，常量引用可以绑定到非const对象上</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">r = <span class="number">2</span>; <span class="comment">//错误，不能通过常量引用改变绑定对象的值</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">i = <span class="number">2</span>; <span class="comment">//正确，i是非const对象，可以改变其值</span></span></pre></td></tr></table></figure>
+<h2 id="const和指针"><a href="#const和指针" class="headerlink" title="const和指针"></a>const和指针</h2><h3 id="emsp-emsp-指向常量的指针"><a href="#emsp-emsp-指向常量的指针" class="headerlink" title="&emsp;&emsp;指向常量的指针"></a>&emsp;&emsp;指向常量的指针</h3><p>&emsp;&emsp;和常量引用类似，指向常量的指针不能用于改变其所指对象的值，要想存放常量对象的地址，只能使用指向常量的指针。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> i = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p1 = &amp;i; <span class="comment">//错误，p1是一个普通指针，不能存放常量对象的地址</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p2 = &amp;i; <span class="comment">//正确，只能用指向常量的指针存放常量对象的地址</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">*p2 = <span class="number">2</span>; <span class="comment">//错误，指向常量的指针不能用于改变其所指对象的值</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;之前提到过，指针的类型必须与其所指向对象的类型一致，但有两个例外。<strong>第一种例外就是允许一个指向常量的指针指向一个非常量对象</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *r = &amp;i; <span class="comment">//正确</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;和常量引用类似，指向常量的指针只是规定不能通过指针改变对象的值，而没有规定那个对象的值不能通过其他途径改变。</p>
+<h3 id="emsp-emsp-常量指针"><a href="#emsp-emsp-常量指针" class="headerlink" title="&emsp;&emsp;常量指针"></a>&emsp;&emsp;常量指针</h3><p>&emsp;&emsp;指针是对象而引用不是，因此指针也能像其他类型一样，将指针本身定义为常量。常量指针必须初始化，而且一旦初始化，则它的值（也就是存放在指针中的那个地址）就不能改变了。把*放在const之前用以说明指针是一个常量。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *<span class="keyword">const</span>  p1 = &amp;i; <span class="comment">//p1将一直指向i</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> j = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *<span class="keyword">const</span> p2 = &amp;j; <span class="comment">//p2是一个指向常量的常量指针</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;为了区分指针的const的属性，用顶层const表示指针本身是一个常量，用底层const表示指针所指的对象是一个常量。<br>&emsp;&emsp;当执行对象的拷贝时，常量是顶层const还是底层const区别明显。对于顶层const而言，由于拷贝操作不会改变被拷贝对象的值，因此拷入或者拷出的对象是否是常量都没有影响。<strong>如果是底层const，则拷入和拷出的对象必须具有相同的底层const属性，或者两个对象的数据类型必须能够转换，一般来说非常量能够转成常量，反之则不行</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> i = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *p1 = &amp;i;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p2 = p1; <span class="comment">//错误，p1包含底层const属性，而p2则不包含</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> j = <span class="number">0</span>;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p3 = &amp;j;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">cosnt <span class="keyword">int</span> *p4 = p3; <span class="comment">//正确，非常量能够转换成常量</span></span></pre></td></tr></table></figure>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://hujuncheng132.github.io/2019/12/08/003/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1207,7 +1425,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1229,7 +1447,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
