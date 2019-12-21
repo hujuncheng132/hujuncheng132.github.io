@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>c++系列文章（6）：类型别名和自动类型</title>
+    <url>/2019/12/21/006/</url>
+    <content><![CDATA[<h2 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h2><p>&emsp;&emsp;类型别名是一个名字，它是<strong>某种类型的同义词</strong>。使用类型别名可以使复杂的类型名字变得简单明了、易于使用。c++有两种方法用于定义类型别名：<strong>typedef和using</strong>。  </p>
+<h3 id="emsp-emsp-typedef"><a href="#emsp-emsp-typedef" class="headerlink" title="&emsp;&emsp;typedef"></a>&emsp;&emsp;typedef</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">double</span> wages; <span class="comment">//wages是double的同义词</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> wages base,*p; <span class="comment">//base是double的同义词，p是double*的同义词</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;关键字<strong>typedef作为声明语句中的基本数据类型的一部分出现</strong>，<strong>含有typedef的声明语句定义的不再是变量而是类型别名</strong>。</p>
+<h3 id="emsp-emsp-using"><a href="#emsp-emsp-using" class="headerlink" title="&emsp;&emsp;using"></a>&emsp;&emsp;using</h3><p>&emsp;&emsp;c++11规定了新的别名声明关键字using。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> wages = <span class="keyword">double</span>; <span class="comment">//wagess是double的同义词</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> p = *<span class="keyword">double</span>; <span class="comment">//p是double*的同义词，即指向double的指针</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;声明成类型别名之后，其基本数据类型可能会发生改变，如果直接将类型别名替换成原本的样子进行理解，可能会发生错误。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> pstring = *<span class="keyword">char</span>; <span class="comment">//pstring表示指向字符的指针</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> pstring p = <span class="literal">nullptr</span>; <span class="comment">//p是一个常量指针,不能将其理解为const char*,即指向字符常量的普通指针</span></span></pre></td></tr></table></figure>
+<h2 id="自动类型"><a href="#自动类型" class="headerlink" title="自动类型"></a>自动类型</h2><h3 id="emsp-emsp-auto"><a href="#emsp-emsp-auto" class="headerlink" title="&emsp;&emsp;auto"></a>&emsp;&emsp;auto</h3><p>&emsp;&emsp;c++11引入了auto类型说明符，<strong>让编译器去分析表达式的初始值来推断类型，因此auto定义的变量必须具有初始值</strong>。  </p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> item = item1 + item2; <span class="comment">//有item1和item2相加的结果推断出item的类型</span></span></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;使用auto也能在一条语句中声明多个变量，因为一条声明语句只能有一个基本数据类型，所以该<strong>语句中所有变量的初始基本数据类型必须一致</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> i = <span class="number">0</span>,*p = &amp;i; <span class="comment">//正确，i是整数，p是整型指针</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> sz = <span class="number">0</span>,pi = <span class="number">3.14</span>; <span class="comment">//错误，sz和pi的基本数据类型不一致</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;编译器推断出来的auto类型可能和初始值的类型并不完全一样，编译器会适当改变结果类型使其更符合初始化规则：<br>&emsp;&emsp;1、对于<strong>引用类型作为初始值</strong>，编译器<strong>以引用对象的类型作为auto的类型</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>,&amp;r = i;</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> a = r; <span class="comment">//a的类型为int</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;2、auto一般会<strong>忽略顶层const，保留底层const</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> ci = <span class="number">0</span>,&amp;cr = &amp;ci; <span class="comment">//i是一个整型常量，cr是一个常量引用</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> b = ci; <span class="comment">//b是一个整数，ci的顶层const被忽略</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> c = cr; <span class="comment">//c是一个整数，cr是ci的引用，而ci的顶层const被忽略</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> d = &amp;ci; <span class="comment">//d是一个指向整数常量的指针，对常量对象取地址是一种底层const</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">//如果希望推断出的auto类型是一个顶层const，需要明确指出</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">auto</span> e = ci; <span class="comment">//ci的推演类型是int,而e的类型是const int</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;如果<strong>将引用（或者指针）的类型设置为auto，初始值中的顶层const属性仍然保留，此时在引用（或者指针）中转化为了底层const</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> &amp;f = ci; <span class="comment">//f是一个常量引用，绑定到ci</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> &amp;g = <span class="number">1</span>; <span class="comment">//错误，不能为非常量引用绑定字面值</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">auto</span> &amp;h = <span class="number">1</span>; <span class="comment">//正确，可以外常量引用绑定字面值</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;要在一条语句中定义多个变量，需要切记，<strong>符号&amp;和*只从属于某个声明符，而非基本数据类型的一部分</strong>，因此初始值必须是同一种类型。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//auto的基本数据类型都是int,j是整型，k是整型引用</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> j = ci,&amp;k = i; </span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">//auto的基本数据类型都是const int，m是对整型常量的引用，p是指向整型常量的指针</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> &amp;m = ci,*p = &amp;ci; </span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">//错误，i的基本数据类型是int，而ci是基本数据类型是const int</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> &amp;n = i,*p = &amp;ci;</span></pre></td></tr></table></figure>
+<h3 id="emsp-emsp-decltype"><a href="#emsp-emsp-decltype" class="headerlink" title="&emsp;&emsp;decltype"></a>&emsp;&emsp;decltype</h3><p>&emsp;&emsp;如果希望从表达式的类型推断出要定义的变量的类型，但是不想用该表达式的值初始化变量，为了满足这类需求，c++11引入了decltype，<strong>它的作用是选择并返回操作数的数据类型，在此过程中，编译器分析表达式并得到它的类型，却不实际计算表达式的值</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">decltype</span>(f()) sum = x; <span class="comment">//sum的类型就是函数f()的返回类型</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;decltype处理顶层const和引用（或者指针）的方式与auto有所不同。<br>&emsp;&emsp;1、<strong>如果decltype使用的表达式是一个变量，那么该变量是什么类decltype就返回什么类型（包括顶层const和引用）</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> ci = <span class="number">1</span>,&amp;cr = ci;</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">decltype</span>(ci) x = <span class="number">0</span>; <span class="comment">//x的类型是const int</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">decltype</span>(cr) y = x; <span class="comment">//y的类型是const int&amp;，y绑定到x上</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">decltype</span>(cr) z; <span class="comment">//错误，z是一个引用，必须初始化</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;注意：引用从来都是作为其所指对象的同义词出现的，只有用来decltype时是一个列外。<br>&emsp;&emsp;2、<strong>如果decltype使用的表达式不是一个变量，则decltype返回表达式结果对应的类型</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">1</span>,*p = &amp;i,&amp;r = i;</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">decltype</span>(r+<span class="number">0</span>) b; <span class="comment">//加法的结果是int类型，因此b的类型是int</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">decltype</span>(*p) c; <span class="comment">//错误，解引用的结果是引用类型，因此c的类型是int&amp;,必须初始化</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;如果decltype使用的表达式是一个<strong>加了括号的变量</strong>，编译器会把它当成是一个表达式，此时得到的是引用类型。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">decltype</span>((i)) d; <span class="comment">//错误，d是int&amp;,必须初始化</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">decltypr(i) e; <span class="comment">//正确，e是int</span></span></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>typedef</tag>
+        <tag>using</tag>
+        <tag>auto</tag>
+        <tag>decltype</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>c++系列文章（5）：constexpr和常量表达式</title>
     <url>/2019/12/21/005/</url>
     <content><![CDATA[<p>&emsp;&emsp;常量表达式是指<strong>值不会改变并且在编译阶段就能得到计算结果的表达式</strong>，显然字面值属常量表达式，用常量表达式初始化的const对象也是常量表达式。<br>&emsp;&emsp;一个对象（或表达式）是不是常量表达式由它的<strong>数据类型和初始值共同决定</strong>。  </p>
