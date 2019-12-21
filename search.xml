@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>c++系列文章（5）：constexpr和常量表达式</title>
+    <url>/2019/12/21/005/</url>
+    <content><![CDATA[<p>&emsp;&emsp;常量表达式是指值<strong>不会改变并且在编译阶段就能得到计算结果的表达式</strong>，显然字面值属常量表达式，用常量表达式初始化的const对象也是常量表达式。<br>&emsp;&emsp;一个对象（或表达式）是不是常量表达式由它的<strong>数据类型和初始值共同决定</strong>。  </p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//staff_size不是常量表达式，尽管staff_size的初始值是个字面值常量，但是它的数据类型只是一个普通的int而非const int。</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> staff_size = <span class="number">1</span>; </span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="comment">//sz不是常量表达式，尽管sz本身是一个常量，但它的具体值直到运行时才能获取到</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> sz = get_size();</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> max_files = <span class="number">1</span>; <span class="comment">//max_files是常量表达式</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> limit = max_files + <span class="number">1</span>; <span class="comment">//limit是常量表达式</span></span></pre></td></tr></table></figure>
+<h2 id="constexpr变量"><a href="#constexpr变量" class="headerlink" title="constexpr变量"></a>constexpr变量</h2><p>&emsp;&emsp;在一个复杂系统中，很难分辨一个初始值到底是不是常量表达式。因此c++11规定，允许<strong>将变量声明为constexpr类型以便编译器来验证变量的值是否是一个常量表达式</strong>。<strong>声明为constexpr的变量一定是一个常量，而且必须用常量表达式初始化</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">int</span> mf = <span class="number">1</span>; <span class="comment">//1是常量表达式</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">int</span> limit = mf + <span class="number">1</span>; <span class="comment">//mf+1是常量表达式</span></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">int</span> sz = size(); <span class="comment">//只有当size是一个constexpr函数时，才是一条正确的声明语句。</span></span></pre></td></tr></table></figure>
+<p>&emsp;&emsp;尽管不能使用普通函数作为constexpr变量的初始值，但c++11允许定义一种特殊的<strong>constexpr函数，这种函数足够简单以使得编译时就可以计算其结果</strong>，这样就能用constexpr函数去初始化constexpr变量了。  </p>
+<h2 id="字面值类型"><a href="#字面值类型" class="headerlink" title="字面值类型"></a>字面值类型</h2><p>&emsp;&emsp;常量表达式的值需要在编译时就得到计算，因此对声明为constexpr时用到的类型必须有所限制，因为这些类型一般比较简单，值也显而易见、容易得到，就把它们称为“字面值类型”。<br>&emsp;&emsp;常见的<strong>算术类型、引用和指针都属于字面值类型</strong>，<strong>自定义的类类型、IO库、string类型则不属于字面值类型</strong>，也就不能被定义为constexpr。<br>&emsp;&emsp;尽管指针和引用能够定义为constexpr，但它们的初始值却受到严格限制，一个<strong>constexpr指针的初始值必须是nullptr或者0，或者是存储与某个固定地址中的对象</strong>。函数体内的变量一般来说并非存放在固定地址中，因此constexpr不能指向这样的变量。相反，定义在所有函数体之外的对象其地址固定不变，能用来初始化constexpr指针。此外c++允许函数定义一类有效范围超出函数本身的变量，这类变量和定义在函数体之外的变量一样也有固定地址。因此constexpr引用能够绑定到这样的变量之上，constexpr指针也能指向这样的变量。  </p>
+<h2 id="指针和constexpr"><a href="#指针和constexpr" class="headerlink" title="指针和constexpr"></a>指针和constexpr</h2><p>&emsp;&emsp;在constexpr声明中如果定义了指针，<strong>constrxpr限定符只对指针有效，与指针所指的对象无关</strong>。  </p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>* p = <span class="literal">nullptr</span>; <span class="comment">//p是一个指向整型常量的指针</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">constexor <span class="keyword">int</span>* q = <span class="literal">nullptr</span>; <span class="comment">//q是一个指向整型的常量指针</span></span></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>常量表达式</tag>
+        <tag>字面值类型</tag>
+        <tag>constexpr</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>c++系列文章（4）：const限定符</title>
     <url>/2019/12/10/004/</url>
     <content><![CDATA[<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>&emsp;&emsp;const对象一旦创建后其值就不能再改变，所以const对象必须初始化，且初始值可以是任意复杂的表达式。  </p>
